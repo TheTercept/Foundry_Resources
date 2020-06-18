@@ -1,0 +1,23 @@
+(async () => {
+    const classes = ["Artificer", "Barbarian", "Bard", "Cleric", "Druid", "Fighter", "Monk", "Paladin", "Ranger", "Rogue", "Sorcerer", "Warlock", "Wizard"];
+
+    const sourceName = prompt("Enter a source name");
+    if (!sourceName || !sourceName.trim()) return;
+
+    let cnt = 0;
+    const dirSource = await Folder.create({name: sourceName, parent: null, type: "Item"});
+    cnt++;
+    for (const c of classes) {
+        const dirClass = await Folder.create({name: c, parent: dirSource.id, type: "Item"});
+        cnt++;
+        for (let i = 0; i < 10; ++i) {
+            await Folder.create({
+                name: i === 0 ? "Cantrip" : `${i}${i === 1 ? "st" : i === 2 ? "nd" : i === 3 ? "rd" : "th"} Level`,
+                parent: dirClass.id,
+                type: "Item"
+            });
+            cnt++;
+        }
+    }
+    ui.notifications.info(`Created ${cnt} folders!`);
+})();
